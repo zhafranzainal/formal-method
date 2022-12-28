@@ -24,8 +24,8 @@ Initial state
 Operation: add birthday
 ┌ AddBirthday
   ΔBirthDayBook
-  name? : NAME
-  date? : DATE
+  name?: NAME
+  date?: DATE
 |
   name? ∉ known
   known′ = known ∪ {name?}
@@ -35,8 +35,8 @@ Operation: add birthday
 Operation: find birthday
 ┌ FindBirthday
   ΞBirthDayBook
-  name? : NAME
-  date! : DATE
+  name?: NAME
+  date!: DATE
 |
   name? ∈ known
   date! = birthday(name?)
@@ -46,7 +46,7 @@ Operation: remind birthday
 ┌ RemindBirthday
   ΞBirthDayBook
   today?: DATE
-  cards! : ℙ NAME
+  cards!: ℙ NAME
 |
   cards! = {n: known | birthday(n) = today?}
 └
