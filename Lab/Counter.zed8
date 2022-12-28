@@ -1,0 +1,44 @@
+﻿─ section Counter parents standard_toolkit
+└
+
+This specification describes ...
+
+State definition
+┌ Counter
+  ctr, mx: ℕ
+|
+  0 ≤ ctr ≤ mx
+└
+
+Initial state
+┌ InitCounter
+  Counter
+|
+  ctr = 0
+└
+
+Operation: increment
+┌ Increment
+  ΔCounter
+|
+  ctr < mx
+  ctr = ctr + 1
+└
+
+Operation: decrement
+┌ Decrement
+  ΔCounter
+  d?: ℕ
+|
+  ctr ≥ d?
+  ctr′ = ctr − d?
+└
+
+Operation: display
+┌ Display
+  ΞCounter
+  c!: ℕ
+|
+  c! = ctr
+└
+

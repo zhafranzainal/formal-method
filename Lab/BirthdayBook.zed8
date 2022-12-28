@@ -1,0 +1,55 @@
+﻿─ section BirthdayBook parents standard_toolkit
+└
+
+This specification describes ...
+
+Given sets
+─ [ NAME, DATE ] └
+
+State definition
+┌ BirthDayBook
+  known: ℙ NAME
+  birthday: NAME ⇸ DATE
+|
+  known = dom birthday
+└
+
+Initial state
+┌ InitBirthDayBook
+  BirthDayBook
+|
+  known = ∅
+└
+
+Operation: add birthday
+┌ AddBirthday
+  ΔBirthDayBook
+  name? : NAME
+  date? : DATE
+|
+  name? ∉ known
+  known′ = known ∪ {name?}
+  birthday′ = birthday ∪ {name? ↦ date?}
+└
+
+Operation: find birthday
+┌ FindBirthday
+  ΞBirthDayBook
+  name? : NAME
+  date! : DATE
+|
+  name? ∈ known
+  date! = birthday(name?)
+└
+
+Operation: remind birthday
+┌ RemindBirthday
+  ΞBirthDayBook
+  today?: DATE
+  cards! : ℙ NAME
+|
+  cards! = {n: known | birthday(n) = today?}
+└
+
+
+
