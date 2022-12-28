@@ -50,6 +50,3 @@ Operation: remind birthday
 |
   cards! = {n: known | birthday(n) = today?}
 └
-
-
-
