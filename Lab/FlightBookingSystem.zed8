@@ -68,10 +68,11 @@ reserve seat
   ΞFlightBookingRecord
   name?: NAME
   flightID?: ID
-  date?: 𝔸
+  date!: 𝔸
 |
   seat < 200
   name? ∈ traveller
   booking′ = booking ∪ {name? ↦ flightID?}
+  date! = flight(flightID?)
   seat = seat + 1
 └
