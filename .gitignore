@@ -1,9 +1,9 @@
 
 *.xmi
-*.xml
 *.ini
 *.index
 *.history
 *.prefs
 *.resources
-.metadata/.lock
+Z Specification (CZT IDE)/.metadata
+Z Specification (CZT IDE)/Lab/.project
