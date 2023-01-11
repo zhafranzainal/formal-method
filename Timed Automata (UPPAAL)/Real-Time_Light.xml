@@ -1,51 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
 <nta>
-	<declaration>// Place global declarations here.</declaration>
+	<declaration>// Place global declarations here.
+clock x;
+chan Push;</declaration>
 	<template>
 		<name x="5" y="5">Light</name>
-		<declaration>// Place local declarations here.</declaration>
+		<declaration>// Place local declarations here.
+</declaration>
 		<location id="id0" x="0" y="0">
 			<name x="-17" y="-34">Start</name>
 		</location>
-		<location id="id1" x="93" y="0">
-			<name x="83" y="-34">Light</name>
+		<location id="id1" x="119" y="0">
+			<name x="109" y="-34">Light</name>
 		</location>
-		<location id="id2" x="221" y="0">
-			<name x="211" y="-34">Bright</name>
+		<location id="id2" x="255" y="0">
+			<name x="245" y="-34">Bright</name>
 		</location>
 		<init ref="id0"/>
 		<transition>
 			<source ref="id1"/>
 			<target ref="id0"/>
-			<label kind="synchronisation" x="25" y="68">Push?</label>
-			<nail x="42" y="68"/>
+			<label kind="guard" x="42" y="34">x &gt; 3</label>
+			<label kind="synchronisation" x="34" y="76">Push?</label>
+			<nail x="51" y="76"/>
 		</transition>
 		<transition>
 			<source ref="id2"/>
 			<target ref="id0"/>
-			<label kind="synchronisation" x="85" y="-110">Push?</label>
-			<nail x="102" y="-93"/>
+			<label kind="synchronisation" x="102" y="-119">Push?</label>
+			<nail x="119" y="-93"/>
 		</transition>
 		<transition>
 			<source ref="id1"/>
 			<target ref="id2"/>
-			<label kind="synchronisation" x="127" y="0">Push?</label>
+			<label kind="guard" x="161" y="-25">x &lt;= 3</label>
+			<label kind="synchronisation" x="161" y="0">Push?</label>
 		</transition>
 		<transition>
 			<source ref="id0"/>
 			<target ref="id1"/>
-			<label kind="synchronisation" x="25" y="0">Push?</label>
+			<label kind="synchronisation" x="34" y="0">Push?</label>
+			<label kind="assignment" x="42" y="-25">x:=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>User</name>
+		<location id="id3" x="0" y="0">
+			<name x="25" y="0">User</name>
+		</location>
+		<init ref="id3"/>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-59" y="-17">Push!</label>
+			<nail x="34" y="-85"/>
+			<nail x="85" y="-68"/>
 		</transition>
 	</template>
 	<system>// Place template instantiations here.
-Process = Template();
+Light1 = Light();
+User1 = User();
+
 // List one or more processes to be composed into a system.
-system Process;
+system Light1, User1;
     </system>
 	<queries>
 		<query>
-			<formula></formula>
+			<formula>A[](x&gt;=0)</formula>
 			<comment></comment>
 		</query>
 	</queries>
