@@ -1,0 +1,46 @@
+﻿─ section Login parents standard_toolkit
+└
+
+This specification describes ...
+
+Given sets
+─ [ USERNAME, PASSWORD, RESPONSE ] └
+
+State definition
+┌ UserRecord
+  known: ℙ USERNAME
+  detail: USERNAME ⇸ PASSWORD
+|
+  known = dom detail
+└
+
+Initial state
+┌ InitUserRecord
+  UserRecord
+|
+  known = ∅
+└
+
+Operation: register user
+┌ RegisterUser
+  ΔUserRecord
+  username?: USERNAME
+  password?: PASSWORD
+|
+  username? ∉ known
+  known′ = known ∪ {username?}
+  detail′ = detail ∪ {username? ↦ password?}
+└
+
+Operation: login user
+┌ LoginUser
+  ΞUserRecord
+  username?: USERNAME
+  password?: PASSWORD
+  response!: RESPONSE
+|
+  username? ∈ known
+└
+
+
+
