@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.</declaration>
+	<template>
+		<name x="5" y="5">Normal</name>
+		<declaration>// Place local declarations here.
+clock x;</declaration>
+		<location id="id0" x="76" y="0">
+			<name x="66" y="-34">S1</name>
+		</location>
+		<location id="id1" x="153" y="0">
+			<name x="143" y="-34">S2</name>
+		</location>
+		<location id="id2" x="0" y="0">
+			<name x="-10" y="-34">S0</name>
+		</location>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id0"/>
+			<label kind="assignment" x="25" y="-25">x:=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Urgent</name>
+		<declaration>// Place local declarations here.
+clock x;</declaration>
+		<location id="id3" x="0" y="0">
+			<name x="-10" y="-34">S0</name>
+		</location>
+		<location id="id4" x="76" y="0">
+			<name x="66" y="-34">S1</name>
+			<urgent/>
+		</location>
+		<location id="id5" x="153" y="0">
+			<name x="143" y="-34">S2</name>
+		</location>
+		<init ref="id3"/>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id4"/>
+			<label kind="assignment" x="25" y="-25">x:=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Committed</name>
+		<declaration>// Place local declarations here.
+clock x;</declaration>
+		<location id="id6" x="0" y="0">
+			<name x="-10" y="-34">S0</name>
+		</location>
+		<location id="id7" x="76" y="0">
+			<name x="66" y="-34">S1</name>
+			<committed/>
+		</location>
+		<location id="id8" x="153" y="0">
+			<name x="143" y="-34">S2</name>
+		</location>
+		<init ref="id6"/>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="assignment" x="25" y="-25">x:=0</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+P0 = Normal();
+P1 = Urgent();
+P2 = Committed();
+
+// List one or more processes to be composed into a system.
+system P0, P1, P2;
+    </system>
+	<queries>
+		<query>
+			<formula></formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
