@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+clock timeSpent;
+chan Enter;
+bool successful, valid = true, sufficient = true, error = false, service = false;</declaration>
+	<template>
+		<name x="5" y="5">Gantry</name>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="-119" y="-17">
+			<name x="-136" y="0">Start</name>
+		</location>
+		<location id="id1" x="-9" y="-17">
+			<name x="-34" y="0">InZone</name>
+		</location>
+		<location id="id2" x="119" y="119">
+			<name x="94" y="136">OutZone</name>
+		</location>
+		<location id="id3" x="119" y="-17">
+			<name x="93" y="-8">Payment</name>
+		</location>
+		<location id="id4" x="297" y="-17">
+			<name x="323" y="-25">PaymentConfirmation</name>
+		</location>
+		<location id="id5" x="297" y="-136">
+			<name x="255" y="-170">PaymentDenied</name>
+		</location>
+		<location id="id6" x="119" y="-127">
+			<name x="76" y="-161">LatePayment</name>
+		</location>
+		<location id="id7" x="476" y="-136">
+			<name x="433" y="-170">InvalidPayment</name>
+		</location>
+		<location id="id8" x="297" y="119">
+			<name x="271" y="136">NoFunds</name>
+		</location>
+		<location id="id9" x="433" y="119">
+			<name x="424" y="136">Error</name>
+		</location>
+		<location id="id10" x="561" y="119">
+			<name x="527" y="136">Maintenance</name>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="187" y="-102">Enter?</label>
+			<label kind="assignment" x="170" y="-119">successful:=true</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id6"/>
+			<label kind="guard" x="25" y="-102">timeSpent &gt; 5</label>
+			<label kind="synchronisation" x="25" y="-119">Enter?</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-110" y="-144">timeSpent &lt;= 3</label>
+			<nail x="-68" y="-127"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="34" y="76">Enter?</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id10"/>
+			<label kind="guard" x="535" y="85">service == true</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id9"/>
+			<label kind="guard" x="425" y="85">error == true</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id8"/>
+			<label kind="guard" x="305" y="93">sufficient == false</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id7"/>
+			<label kind="guard" x="459" y="-119">valid == false</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="guard" x="306" y="-119">successful == false</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id2"/>
+			<label kind="guard" x="76" y="34">successful == true</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id4"/>
+			<label kind="guard" x="136" y="-42">timeSpent &lt;= 5</label>
+			<label kind="synchronisation" x="170" y="-17">Enter?</label>
+			<label kind="assignment" x="136" y="-59">successful:=true</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id3"/>
+			<label kind="guard" x="8" y="-42">timeSpent &gt; 3</label>
+			<label kind="synchronisation" x="25" y="-17">Enter?</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-93" y="-17">Enter?</label>
+			<label kind="assignment" x="-102" y="-42">timeSpent:=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Vehicle</name>
+		<location id="id11" x="0" y="0">
+			<name x="-17" y="17">Vehicle</name>
+		</location>
+		<init ref="id11"/>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id11"/>
+			<label kind="synchronisation" x="-42" y="-34">Enter!</label>
+			<nail x="34" y="-102"/>
+			<nail x="85" y="-85"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Gantry1 = Gantry();
+Vehicle1 = Vehicle();
+
+// List one or more processes to be composed into a system.
+system Gantry1, Vehicle1;
+</system>
+	<queries>
+		<query>
+			<formula></formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
