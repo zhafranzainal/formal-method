@@ -67,5 +67,5 @@ reserve seat
   seat! = booking(name?)
   seat < 200
   seat′ = seat + 1
-  traveller′ = traveller ∪ {name?} 
+  booking′ = booking ∪ {name? ↦ {flight? ↦ seat}} 
 └
