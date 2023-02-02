@@ -6,57 +6,51 @@ This specification describes ...
 Given sets
 ─ [ NAME, ID, DATE ] └
 
-State definition for flight
-Each flight has 200 maximum seat
-┌ FlightBookingRecord
-  known: ℙ ID
-  flight: ID ⇸ 𝔸
-  seat: ℕ
-|
-  known = dom flight
-  0 ≤ seat ≤ 200
-└
-
-State definition for traveller
-┌ TravellerRecord
-  traveller: ℙ NAME
-  booking: NAME ⇸ ID
-|
-  traveller = dom booking
-└
-
 Initial state flight ID and flight date
-┌ InitFlightBookingRecord
-  FlightBookingRecord
-  FL001: ID
-  FL002: ID
-  FL003: ID
+┌ InitFlightRecord
+  flight: ID
+  date: DATE
 |
-  known = {FL001, FL002, FL003}
-  flight = {
-  FL001 ↦ 23,
-  FL001 ↦ 26,
-  FL001 ↦ 29,
-  FL002 ↦ 21,
-  FL003 ↦ 22
+  flightData = ID → DATE
+  flightData′ = {
+  {FL001, 23-Dec},
+  {FL001, 26-Dec},
+  {FL001, 29-Dec},
+  {FL002, 21-Dec},
+  {FL003, 22-Dec}
   }
 └
 
+State definition for flight booking
+Each flight has 200 maximum seat
+┌ FlightBookingRecord
+  customer: ℙ NAME
+  traveller: ℙ NAME
+  InitFlightRecord
+  booking: NAME ⇸ ID ⇸ ℕ
+  seat: ℕ
+|
+  customer ⊆ traveller
+  customer = dom booking
+  traveller = dom booking
+  0 ≤ seat ≤ 200  
+└
+
 Operation: register new traveller
-┌ AddTraveller
-  ΔTravellerRecord
+┌ RegisterTraveller
+  ΔFlightBookingRecord
   name?: NAME
 |
-  name? ∉ traveller
-  traveller = traveller ∪ {name?}
+  name? ∉ customer
+  customer′ = customer ∪ {name?}
 └
 
 Operation: display flight info
-┌ DisplayFlight
+┌ DisplayFlightInfo
   ΞFlightBookingRecord
-  info!: ℙ ID
+  info!: ID → DATE
 |
-  info! = {n: known}
+  info! = InitFlightRecord
 └
 
 Operation:
@@ -64,15 +58,14 @@ book flight
 restrict booking flight to only registered traveller
 reserve seat
 ┌ BookFlight
-  ΔTravellerRecord
-  ΞFlightBookingRecord
+  ΔFlightBookingRecord
   name?: NAME
-  flightID?: ID
-  date!: 𝔸
+  flight?: ID
+  seat!: ℕ
 |
+  name? ∈ customer
+  seat! = booking(name? ↦ flight?)
   seat < 200
-  name? ∈ traveller
-  booking′ = booking ∪ {name? ↦ flightID?}
-  date! = flight(flightID?)
-  seat = seat + 1
+  seat′ = seat + 1
+  traveller′ = traveller ∪ {name? ↦ flight? ↦ seat} 
 └
