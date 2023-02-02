@@ -6,19 +6,19 @@ This specification describes ...
 Given sets
 ─ [ NAME, ID, DATE ] └
 
+State definition for flight
+┌ FlightRecord
+  flightData: ℙ ID
+  flight: ID ⇸ DATE
+|
+  flightData = dom flight
+└
+
 Initial state flight ID and flight date
 ┌ InitFlightRecord
-  flight: ID
-  date: DATE
+  FlightRecord
 |
-  flightData = ID → DATE
-  flightData′ = {
-  {FL001, 23-Dec},
-  {FL001, 26-Dec},
-  {FL001, 29-Dec},
-  {FL002, 21-Dec},
-  {FL003, 22-Dec}
-  }
+  flightData = ∅
 └
 
 State definition for flight booking
@@ -50,7 +50,7 @@ Operation: display flight info
   ΞFlightBookingRecord
   info!: ID → DATE
 |
-  info! = InitFlightRecord
+  info! = flight
 └
 
 Operation:
@@ -61,11 +61,11 @@ reserve seat
   ΔFlightBookingRecord
   name?: NAME
   flight?: ID
-  seat!: ℕ
+  seat!: ID → ℕ
 |
   name? ∈ customer
-  seat! = booking(name? ↦ flight?)
+  seat! = booking(name?)
   seat < 200
   seat′ = seat + 1
-  traveller′ = traveller ∪ {name? ↦ flight? ↦ seat} 
+  traveller′ = traveller ∪ {name?} 
 └
