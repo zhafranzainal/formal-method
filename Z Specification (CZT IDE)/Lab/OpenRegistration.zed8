@@ -4,16 +4,18 @@
 This specification describes ...
 
 Given sets
-─ [ USERNAME, PASSWORD, RESPONSE, COOKIE, NAME, COURSE, APPROVAL ] └
+─ [ USERNAME, PASSWORD, RESPONSE, COOKIE, NAME, STANDING, COURSE, APPROVAL ] └
 
 State definition for user
 ┌ UserRecord
-  student: ℙ USERNAME
   academicAdvisor: ℙ USERNAME
-  detail: USERNAME ⇸ PASSWORD
+  student: ℙ USERNAME
+  credential: USERNAME ⇸ PASSWORD
+  academicStanding: USERNAME ⇸ STANDING
 |
-  student = dom detail
-  academicAdvisor = dom detail
+  academicAdvisor = dom credential
+  student = dom credential
+  student = dom academicStanding
 └
 
 Initial state for user
@@ -113,15 +115,40 @@ Operation:
 register subject for student
 restrict student P1 and P2 from registering subject above 12 credit hours
 ┌ RegisterSubject
+  ΞUserRecord
   ΔRegisteredSubjectRecord
+  username?: USERNAME
   name?: NAME
   course?: COURSE
   creditHours!: COURSE → ℕ
+  academicStanding!: STANDING
+  KC: STANDING
+  KB: STANDING
+  P1: STANDING
+  P2: STANDING
 |
   name? ∈ studentName
   course? ∉ course
+  academicStanding! = academicStanding(username?)
   creditHours! = registeredSubject(name?)
+  
+  academicStanding! = KC
   creditHours < 20
+  creditHours′ = creditHours + 3
+  registeredSubject′ = registeredSubject ∪ {name? ↦ {course? ↦ creditHours}}
+  
+  academicStanding! = KB
+  creditHours < 20
+  creditHours′ = creditHours + 3
+  registeredSubject′ = registeredSubject ∪ {name? ↦ {course? ↦ creditHours}}
+  
+  academicStanding! = P1
+  creditHours < 12
+  creditHours′ = creditHours + 3
+  registeredSubject′ = registeredSubject ∪ {name? ↦ {course? ↦ creditHours}}
+  
+  academicStanding! = P2
+  creditHours < 12
   creditHours′ = creditHours + 3
   registeredSubject′ = registeredSubject ∪ {name? ↦ {course? ↦ creditHours}}
 └
