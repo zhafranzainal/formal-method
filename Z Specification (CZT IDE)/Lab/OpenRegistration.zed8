@@ -70,7 +70,7 @@ State definition for approved subject
   studentName = dom approvedSubject
 └
 
-Initial state for registered subject
+Initial state for approved subject
 ┌ InitApprovedSubjectRecord
   ApprovedSubjectRecord
 |
