@@ -89,6 +89,7 @@ Operation: login for student and academic advisor
 |
   username? ∈ student
   username? ∈ academicAdvisor
+  credential(username?) = password?
   response! = loginSuccessful
   session′ = session ∪ {username?}
   
