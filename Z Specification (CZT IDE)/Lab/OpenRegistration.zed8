@@ -1,0 +1,208 @@
+﻿─ section OpenRegistration parents standard_toolkit
+└
+
+This specification describes ...
+
+Given sets
+─ [ USERNAME, PASSWORD, RESPONSE, COOKIE, NAME, COURSE, APPROVAL ] └
+
+State definition for user
+┌ UserRecord
+  student: ℙ USERNAME
+  academicAdvisor: ℙ USERNAME
+  detail: USERNAME ⇸ PASSWORD
+|
+  student = dom detail
+  academicAdvisor = dom detail
+└
+
+Initial state for user
+┌ InitUserRecord
+  UserRecord
+|
+  student = ∅
+  academicAdvisor = ∅
+└
+
+State definition for login session
+┌ SessionRecord
+  session: ℙ USERNAME
+  identification: USERNAME → COOKIE
+|
+  session = dom identification
+└
+
+Initial state for login session
+┌ InitSessionRecord
+  SessionRecord
+|
+  session = ∅
+└
+
+State definition for registered subject
+Each student has 20 maximum credit hours
+┌ RegisteredSubjectRecord
+  studentName: ℙ NAME
+  course: ℙ COURSE
+  registeredSubject: NAME ⇸ COURSE ⇸ ℕ
+  creditHours: ℕ
+|
+  studentName = dom registeredSubject
+  0 ≤ creditHours ≤ 20
+└
+
+Initial state for registered subject
+┌ InitRegisteredSubjectRecord
+  RegisteredSubjectRecord
+|
+  studentName = ∅
+└
+
+State definition for approved subject
+┌ ApprovedSubjectRecord
+  studentName: ℙ NAME
+  course: ℙ COURSE
+  approvedSubject: NAME ⇸ COURSE ⇸ ℕ
+  creditHours: ℕ
+|
+  studentName = dom approvedSubject
+└
+
+Initial state for registered subject
+┌ InitApprovedSubjectRecord
+  ApprovedSubjectRecord
+|
+  studentName = ∅
+└
+
+Operation: login for student and academic advisor
+┌ LoginUser
+  ΞUserRecord
+  ΔSessionRecord
+  username?: USERNAME
+  password?: PASSWORD
+  response!: RESPONSE
+  loginSuccessful: RESPONSE
+  loginFailed: RESPONSE
+|
+  username? ∈ student
+  username? ∈ academicAdvisor
+  response! = loginSuccessful
+  session′ = session ∪ {username?}
+  
+  username? ∉ student
+  username? ∉ academicAdvisor
+  response! = loginFailed
+└
+
+Operation: logout for student and academic advisor
+┌ LogoutUser
+  ΞUserRecord
+  ΔSessionRecord
+  username!: USERNAME
+  response!: RESPONSE
+  logoutSuccessful: RESPONSE
+|
+  username! ∈ student
+  username! ∈ academicAdvisor
+  session′ = session ∖ {username!}
+  response! = logoutSuccessful
+└
+
+Operation:
+register subject for student
+restrict student P1 and P2 from registering subject above 12 credit hours
+┌ RegisterSubject
+  ΔRegisteredSubjectRecord
+  name?: NAME
+  course?: COURSE
+  creditHours!: COURSE → ℕ
+|
+  name? ∈ studentName
+  course? ∉ course
+  creditHours! = registeredSubject(name?)
+  creditHours < 20
+  creditHours′ = creditHours + 3
+  registeredSubject′ = registeredSubject ∪ {name? ↦ {course? ↦ creditHours}}
+└
+
+Operation: withdraw registered subject for student
+┌ WithdrawRegisteredSubject
+  ΔRegisteredSubjectRecord
+  name?: NAME
+  course?: COURSE
+  creditHours!: COURSE → ℕ
+|
+  name? ∈ studentName
+  course? ∈ course
+  creditHours! = registeredSubject(name?)
+  creditHours′ = creditHours − 3
+  registeredSubject′ = registeredSubject ∖ {name? ↦ {course? ↦ creditHours}}
+└
+
+Operation: withdraw approved subject for student
+┌ WithdrawApprovedSubject
+  ΔApprovedSubjectRecord
+  name?: NAME
+  course?: COURSE
+  creditHours!: COURSE → ℕ
+|
+  name? ∈ studentName
+  course? ∈ course
+  creditHours! = approvedSubject(name?)
+  creditHours′ = creditHours − 3
+  approvedSubject′ = approvedSubject ∖ {name? ↦ {course? ↦ creditHours}}
+└
+
+Operation: approve subject registered/withdrawn by student
+┌ ApproveSubject
+  ΞRegisteredSubjectRecord
+  ΔApprovedSubjectRecord
+  list!: ℙ NAME
+  name?: NAME
+  course?: COURSE
+  creditHours!: COURSE → ℕ
+  status!: APPROVAL
+  subjectRegistrationApproved: APPROVAL
+|
+  list! = studentName
+  name? ∈ studentName
+  creditHours! = approvedSubject(name?)
+  creditHours′ = creditHours + 3
+  approvedSubject′ = approvedSubject ∪ {name? ↦ {course? ↦ creditHours}}
+  registeredSubject′ = registeredSubject ∖ {name? ↦ {course? ↦ creditHours}}
+  status! = subjectRegistrationApproved
+└
+
+Operation: disapprove subject registered/withdrawn by student
+┌ DisapproveSubject
+  ΔRegisteredSubjectRecord
+  name?: NAME
+  course?: COURSE
+  creditHours!: COURSE → ℕ
+  status!: APPROVAL
+  subjectRegistrationDisapproved: APPROVAL
+|
+  name? ∈ studentName
+  course? ∈ course
+  creditHours! = registeredSubject(name?)
+  creditHours′ = creditHours − 3
+  registeredSubject′ = registeredSubject ∖ {name? ↦ {course? ↦ creditHours}}
+  status! = subjectRegistrationDisapproved
+└
+
+Operation: display all information of registered subjects by student
+┌ DisplayRegisteredSubject
+  ΞRegisteredSubjectRecord
+  list!: ℙ NAME
+|
+  list! = studentName
+└
+
+Operation: display all information of approved subjects by academic advisor
+┌ DisplayApprovedSubject
+  ΞApprovedSubjectRecord
+  list!: ℙ NAME
+|
+  list! = studentName
+└
