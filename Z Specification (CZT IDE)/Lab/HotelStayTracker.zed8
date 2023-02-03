@@ -1,0 +1,101 @@
+﻿─ section HotelStayTracker parents standard_toolkit
+└
+
+This specification describes ...
+
+Given sets
+─ [ NAME, DATE, STATUS ] └
+
+State definition
+customer set (registered customer)
+guest set (registered customer that is currently checked in)
+┌ StayingRecord
+  customer: ℙ NAME
+  guest: ℙ NAME
+  checkinDate: NAME → DATE
+  checkoutDate: NAME ⇸ DATE
+|
+  guest ⊆ customer
+  guest = dom (checkinDate ∪ checkoutDate)
+└
+
+Initial state
+┌ InitStayingRecord
+  StayingRecord
+|
+  customer = ∅
+  guest = ∅
+└
+
+Operation: register new customer
+┌ RegisterCustomer
+  ΔStayingRecord
+  name?: NAME
+|
+  name? ∉ customer
+  customer′ = customer ∪ {name?}
+└
+
+Operation: remove existing customer
+┌ RemoveCustomer
+  ΔStayingRecord
+  name?: NAME
+|
+  name? ∈ customer
+  customer′ = customer ∖ {name?}
+└
+
+Operation:
+check in customer
+restrict check in to only registered customer
+┌ CheckinCustomer
+  ΔStayingRecord
+  name?: NAME
+  date?: DATE
+|
+  name? ∈ customer
+  checkinDate(name?) = date?
+  guest′ = guest ∪ {name?}
+└
+
+Operation:
+check out customer
+restrict check out to only registered customer that is currently a guest
+display staying days using check in & check out date
+display price (staying days x 200)
+┌ CheckoutCustomer
+  ΔStayingRecord
+  name?: NAME
+  date?: DATE
+  stayingDays!: ℕ
+  price!: ℕ
+|
+  name? ∈ guest
+  stayingDays! = date? − checkinDate(name?)
+  price! = stayingDays! * 200
+  checkoutDate(name?) = date?
+  guest′ = guest ∖ {name?}
+└
+
+Operation: find either a customer is check-in or check-out
+┌ IsCustomerCheckin
+  ΞStayingRecord
+  name?: NAME
+  result!: STATUS
+  custCheckedIn: STATUS
+  custCheckedOut: STATUS
+|
+  name? ∈ guest
+  result! = custCheckedIn
+  
+  name? ∉ guest
+  result! = custCheckedOut
+└
+
+Operation: display currently checked in customer
+┌ DisplayCurrentCustomer
+  ΞStayingRecord
+  list!: ℙ NAME
+|
+  list! = guest
+└
