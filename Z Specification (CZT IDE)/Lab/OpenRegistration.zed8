@@ -222,15 +222,15 @@ Operation: disapprove subject registered/withdrawn by student
 Operation: display all information of registered subjects by student
 ┌ DisplayRegisteredSubject
   ΞRegisteredSubjectRecord
-  list!: ℙ NAME
+  list!: NAME ⇸ COURSE ⇸ ℕ
 |
-  list! = studentName
+  list! = registeredSubject
 └
 
 Operation: display all information of approved subjects by academic advisor
 ┌ DisplayApprovedSubject
   ΞApprovedSubjectRecord
-  list!: ℙ NAME
+  list!: NAME ⇸ COURSE ⇸ ℕ
 |
-  list! = studentName
+  list! = approvedSubject
 └
