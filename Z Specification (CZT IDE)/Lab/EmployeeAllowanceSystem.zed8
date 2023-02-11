@@ -1,0 +1,56 @@
+﻿─ section EmployeeAllowanceSystem parents standard_toolkit
+└
+
+This specification describes ...
+
+Given sets
+─ [ NAME, DATE ] └
+
+State definition
+┌ EmployeeRecord
+  employee: ℙ NAME
+  travelDate: NAME ⇸ DATE
+  returnDate: NAME ⇸ DATE
+|
+  employee = dom (travelDate ∪ returnDate)
+└
+
+Initial state
+┌ InitEmployeeRecord
+  EmployeeRecord
+|
+  employee = ∅
+└
+
+Operation: register employee
+┌ RegisterEmployee
+  ΔEmployeeRecord
+  name?: NAME
+|
+  name? ∉ employee
+  employee′ = employee ∪ {name?}
+└
+
+Operation: record travel out and return date
+┌ RecordTravel
+  ΔEmployeeRecord
+  name?: NAME
+  outDate?: DATE
+  arrivedDate?: DATE
+|
+  name? ∈ employee
+  travelDate′ = travelDate ∪ {name? ↦ outDate?}
+  returnDate′ = returnDate ∪ {name? ↦ arrivedDate?}
+└
+
+Operation: display allowance
+┌ DisplayAllowance
+  ΞEmployeeRecord
+  name?: NAME
+  totalDays!: ℕ
+  allowance!: ℕ
+|
+  name? ∈ employee
+  totalDays! = returnDate(name?) − travelDate(name?)
+  allowance! = totalDays! * 500
+└
