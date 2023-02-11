@@ -4,7 +4,22 @@
 This specification describes ...
 
 Given sets
-─ [ USERNAME, PASSWORD, RESPONSE, COOKIE, NAME, STANDING, COURSE, APPROVAL ] └
+─ [ USERNAME, PASSWORD, COOKIE, NAME, COURSE ] └
+
+Freetype definition for login response
+─
+  RESPONSE ::= loginSuccessful | loginFailed
+└
+
+Freetype definition for student's academic standing
+─
+  STANDING ::= KC | KB | P1 | P2
+└
+
+Freetype definition for approval status
+─
+  APPROVAL ::= subjectRegistrationApproved | null
+└
 
 State definition for user
 ┌ UserRecord
@@ -84,8 +99,6 @@ Operation: login for student and academic advisor
   username?: USERNAME
   password?: PASSWORD
   response!: RESPONSE
-  loginSuccessful: RESPONSE
-  loginFailed: RESPONSE
 |
   username? ∈ student
   username? ∈ academicAdvisor
@@ -123,10 +136,6 @@ restrict student P1 and P2 from registering subject above 12 credit hours
   course?: COURSE
   creditHours!: COURSE → ℕ
   academicStanding!: STANDING
-  KC: STANDING
-  KB: STANDING
-  P1: STANDING
-  P2: STANDING
 |
   name? ∈ studentName
   course? ∉ course
@@ -191,7 +200,6 @@ Operation: approve subject registered/withdrawn by student
   course?: COURSE
   creditHours!: COURSE → ℕ
   status!: APPROVAL
-  subjectRegistrationApproved: APPROVAL
 |
   list! = studentName
   name? ∈ studentName
