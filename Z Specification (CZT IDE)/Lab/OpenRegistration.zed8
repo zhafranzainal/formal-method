@@ -18,7 +18,7 @@ Freetype definition for student's academic standing
 
 Freetype definition for approval status
 ─
-  APPROVAL ::= subjectRegistrationApproved | null
+  APPROVAL ::= subjectRegistrationApproved | subjectRegistrationDisapproved
 └
 
 State definition for user
@@ -217,7 +217,6 @@ Operation: disapprove subject registered/withdrawn by student
   course?: COURSE
   creditHours!: COURSE → ℕ
   status!: APPROVAL
-  subjectRegistrationDisapproved: APPROVAL
 |
   name? ∈ studentName
   course? ∈ course
