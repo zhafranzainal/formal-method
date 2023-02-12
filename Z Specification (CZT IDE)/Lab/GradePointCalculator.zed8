@@ -1,0 +1,85 @@
+﻿─ section GradePointCalculator parents standard_toolkit
+└
+
+This specification describes ...
+
+Given sets
+─ [ ID, NAME, PROGRAM, COURSE ] └
+
+Freetype definition for grade
+─
+  GRADE ::= A | B | C | D | E | F
+└
+
+State definition for student
+┌ StudentRecord
+  student: ℙ ID
+  studentDetails: ID → NAME → PROGRAM
+  studentGPA: ID → 𝔸
+  studentCGPA: ID → 𝔸
+  studentCredit: ID → 𝔸
+|
+  student = dom studentDetails
+  student = dom (studentGPA ∪ studentCGPA ∪ studentCredit)
+└
+
+Initial state for student
+┌ InitStudentRecord
+  StudentRecord
+|
+  student = ∅
+└
+
+State definition for subject
+┌ SubjectRecord
+  subject: ℙ ID
+  subjectDetails: ID ⇸ COURSE → ℕ ⇸ ℕ ⇸ GRADE ⇸ 𝔸
+  subjectMarks: COURSE ⇸ ℕ
+  subjectGrade: COURSE ⇸ GRADE
+  subjectPointer: COURSE ⇸ 𝔸
+|
+  subject = dom subjectDetails
+└
+
+Initial state for subject
+┌ InitSubjectRecord
+  SubjectRecord
+  
+|
+  subjectDetails = ID ↦ COURSE ↦ ℕ ↦ ℕ ↦ GRADE ↦ 𝔸
+└
+
+Operation: calculate gpa
+┌ CalculateGPA
+  ΔStudentRecord
+  studentID?: ID
+  pointer?: 𝔸
+  credit?: ℕ
+  gpa!: 𝔸
+|
+  gpa! = pointer? div credit?
+  studentGPA′ = studentGPA ∪ {studentID? ↦ gpa!}
+└
+
+Operation: calculate cgpa
+┌ CalculateCGPA
+  ΔStudentRecord
+  studentID?: ID
+  gpa?: 𝔸
+  credit?: ℕ
+  cgpa!: 𝔸
+|
+  cgpa! = gpa? div credit?
+  studentCGPA′ = studentCGPA ∪ {studentID? ↦ cgpa!}
+└
+
+Operation: display student and subject info
+┌ DisplayInfo
+  ΞStudentRecord
+  ΞSubjectRecord
+  studentInfo!: ID → NAME → PROGRAM
+  subjectInfo!: ID ⇸ COURSE → ℕ ⇸ ℕ ⇸ GRADE ⇸ 𝔸
+|
+  studentInfo! = studentDetails
+  subjectInfo! = subjectDetails 
+└
