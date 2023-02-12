@@ -4,7 +4,12 @@
 This specification describes ...
 
 Given sets
-─ [ NAME, DATE, STATUS ] └
+─ [ NAME, DATE ] └
+
+Freetype definition for staying status
+─
+  STATUS ::= custCheckedIn | custCheckedOut
+└
 
 State definition
 customer set (registered customer)
@@ -82,8 +87,6 @@ Operation: find either a customer is check-in or check-out
   ΞStayingRecord
   name?: NAME
   result!: STATUS
-  custCheckedIn: STATUS
-  custCheckedOut: STATUS
 |
   name? ∈ guest
   result! = custCheckedIn
