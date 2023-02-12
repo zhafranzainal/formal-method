@@ -4,11 +4,16 @@
 This specification describes ...
 
 Given sets
-─ [ ID, NAME, PROGRAM, COURSE ] └
+─ [ ID, NAME, PROGRAM ] └
 
 Freetype definition for grade
 ─
   GRADE ::= A | B | C | D | E | F
+└
+
+Freetype definition for subject name
+─
+  COURSE ::= OOP | Titas | English | Calculus | SoftEng
 └
 
 State definition for student
@@ -44,9 +49,13 @@ State definition for subject
 Initial state for subject
 ┌ InitSubjectRecord
   SubjectRecord
-  
+  CA10001: ID
 |
-  subjectDetails = ID ↦ COURSE ↦ ℕ ↦ ℕ ↦ GRADE ↦ 𝔸
+  subjectDetails = {CA10001 ↦ {OOP ↦ {3 ↦ {90 ↦ {A ↦ 4}}}}}
+  subjectDetails = {CA10001 ↦ {Titas ↦ {2 ↦ {100 ↦ {A ↦ 4}}}}}
+  subjectDetails = {CA10001 ↦ {English ↦ {2 ↦ {80 ↦ {A ↦ 4}}}}}
+  subjectDetails = {CA10001 ↦ {Calculus ↦ {3 ↦ {85 ↦ {A ↦ 4}}}}}
+  subjectDetails = {CA10001 ↦ {SoftEng ↦ {3 ↦ {95 ↦ {A ↦ 4}}}}}
 └
 
 Operation: calculate gpa
