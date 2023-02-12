@@ -59,26 +59,30 @@ Initial state for subject
 └
 
 Operation: calculate gpa
+gpa = sum (pointer * credit) / totalCredit
 ┌ CalculateGPA
   ΔStudentRecord
+  ΞSubjectRecord
   studentID?: ID
-  pointer?: 𝔸
-  credit?: ℕ
+  pointer: 𝔸
+  credit: ℕ
+  totalCredit: ℕ
   gpa!: 𝔸
 |
-  gpa! = pointer? div credit?
+  gpa! = (pointer * credit) div totalCredit
   studentGPA′ = studentGPA ∪ {studentID? ↦ gpa!}
 └
 
 Operation: calculate cgpa
+cgpa = sum gpa / no of semester
 ┌ CalculateCGPA
   ΔStudentRecord
   studentID?: ID
-  gpa?: 𝔸
-  credit?: ℕ
+  gpa: 𝔸
+  semester: ℕ
   cgpa!: 𝔸
 |
-  cgpa! = gpa? div credit?
+  cgpa! = gpa div semester
   studentCGPA′ = studentCGPA ∪ {studentID? ↦ cgpa!}
 └
 
@@ -87,8 +91,14 @@ Operation: display student and subject info
   ΞStudentRecord
   ΞSubjectRecord
   studentInfo!: ID → NAME → PROGRAM
+  cgpa!: ID → 𝔸
+  gpa!: ID → 𝔸
+  accountCredit!: ID → 𝔸
   subjectInfo!: ID ⇸ COURSE → ℕ ⇸ ℕ ⇸ GRADE ⇸ 𝔸
 |
   studentInfo! = studentDetails
+  cgpa! = studentCGPA
+  gpa! = studentGPA
+  accountCredit! = studentCredit
   subjectInfo! = subjectDetails 
 └
