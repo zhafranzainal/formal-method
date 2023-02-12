@@ -1,0 +1,82 @@
+﻿─ section OrderSystem parents standard_toolkit
+└
+
+This specification describes ...
+
+Given sets
+─ [ NAME, ORDER ] └
+
+Freetype definition for response
+─
+  RESPONSE ::= successful | failed
+└
+
+State definition
+┌ OrderRecord
+  customer: ℙ NAME
+  orderID: ℕ
+  order: NAME ⤔ ℕ → ORDER
+  orderQuantity: ℕ → ℕ
+  orderPrice: ℕ → ℕ
+|
+  customer = dom order
+└
+ 
+Initial state
+┌ InitOrderRecord
+  OrderRecord
+|
+  customer = ∅
+└
+
+Operation: place new order
+┌ NewOrder
+  ΔOrderRecord
+  name?: NAME
+  goods?: ORDER
+  status!: RESPONSE
+|
+  orderID′ = orderID + 1
+  order′ = order ∪ {name? ↦ {orderID ↦ goods?} }
+  status! = successful
+└
+
+Operation: update customer order
+┌ UpdateOrder
+  ΔOrderRecord
+  name?: NAME
+  orderID?: ℕ → ORDER
+  goods?: ORDER
+|
+  orderID? = order(name?)
+  order′ = order ∖ {name? ↦ {orderID ↦ goods?} }
+  order′ = order ∪ {name? ↦ {orderID ↦ goods?} }
+└
+
+Operation: generate invoice
+┌ GenerateInvoice
+  ΔOrderRecord
+  name?: NAME
+  orderID?: ℕ → ORDER
+  quantity?: ℕ
+  price?: ℕ
+|
+  orderID? = order(name?)
+  orderQuantity′ = orderQuantity ∪ {orderID ↦ quantity?}
+  orderPrice′ = orderPrice ∪ {orderID ↦ price?}
+└
+
+Operation: calculate total order
+┌ CalculateTotal
+  ΞOrderRecord
+  name?: NAME
+  orderID?: ℕ → ORDER
+  quantity!: ℕ
+  price!: ℕ
+  totalPayment!: ℕ
+|
+  orderID? = order(name?)
+  quantity! = orderQuantity(orderID)
+  price! = orderPrice(orderID)
+  totalPayment! = quantity! * price!
+└
