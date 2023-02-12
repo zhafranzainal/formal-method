@@ -4,21 +4,33 @@
 This specification describes ...
 
 Given sets
-─ [ NAME, ID, DATE ] └
+─ [ NAME, ID ] └
+
+Freetype definition for month
+─
+  MONTH ::= Jan | Feb | Mar | Apr | May | Jun | Jul | Aug | Sep | Oct | Nov | Dec
+└
 
 State definition for flight
 ┌ FlightRecord
-  flightData: ℙ ID
-  flight: ID ⇸ DATE
+  flight: ℙ ID
+  flightData: ID ⇸ ℕ → MONTH
 |
-  flightData = dom flight
+  flight = dom flightData
 └
 
 Initial state flight ID and flight date
 ┌ InitFlightRecord
   FlightRecord
+  FL001: ID
+  FL002: ID
+  FL003: ID
 |
-  flightData = ∅
+  flightData = {FL001 ↦ {23 ↦ Dec}}
+  flightData = {FL001 ↦ {26 ↦ Dec}}
+  flightData = {FL001 ↦ {29 ↦ Dec}}
+  flightData = {FL002 ↦ {21 ↦ Dec}}
+  flightData = {FL003 ↦ {22 ↦ Dec}}
 └
 
 State definition for flight booking
@@ -48,9 +60,9 @@ Operation: register new traveller
 Operation: display flight info
 ┌ DisplayFlightInfo
   ΞFlightBookingRecord
-  info!: ID → DATE
+  info!: ID ⇸ ℕ → MONTH
 |
-  info! = flight
+  info! = flightData
 └
 
 Operation:
