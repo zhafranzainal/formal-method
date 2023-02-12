@@ -31,17 +31,17 @@ State definition for student
 Initial state for student
 ┌ InitStudentRecord
   StudentRecord
+  CA10001: ID
+  Ali: NAME
+  BCN: PROGRAM
 |
-  student = ∅
+  studentDetails = {CA10001 ↦ {Ali ↦ BCN}}
 └
 
 State definition for subject
 ┌ SubjectRecord
   subject: ℙ ID
   subjectDetails: ID ⇸ COURSE → ℕ ⇸ ℕ ⇸ GRADE ⇸ 𝔸
-  subjectMarks: COURSE ⇸ ℕ
-  subjectGrade: COURSE ⇸ GRADE
-  subjectPointer: COURSE ⇸ 𝔸
 |
   subject = dom subjectDetails
 └
