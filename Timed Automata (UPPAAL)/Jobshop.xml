@@ -2,7 +2,9 @@
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
 <nta>
 	<declaration>// Place global declarations here.
-chan get_hammer, put_hammer, get_mallet, put_mallet;</declaration>
+chan get_hammer, put_hammer, get_mallet, put_mallet;
+const int J = 10;
+int[0, J] jobs;</declaration>
 	<template>
 		<name>Hammer</name>
 		<location id="id0" x="0" y="0">
@@ -52,7 +54,15 @@ chan get_hammer, put_hammer, get_mallet, put_mallet;</declaration>
 		<location id="id9" x="238" y="102">
 			<name x="255" y="76">work_hard</name>
 		</location>
+		<location id="id10" x="0" y="102">
+			<name x="-17" y="119">done</name>
+		</location>
 		<init ref="id2"/>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-59" y="42">jobs == J</label>
+		</transition>
 		<transition>
 			<source ref="id9"/>
 			<target ref="id2"/>
@@ -105,35 +115,41 @@ chan get_hammer, put_hammer, get_mallet, put_mallet;</declaration>
 		<transition>
 			<source ref="id2"/>
 			<target ref="id5"/>
+			<label kind="guard" x="34" y="85">jobs &lt; J</label>
+			<label kind="assignment" x="34" y="102">jobs++</label>
 		</transition>
 		<transition>
 			<source ref="id2"/>
 			<target ref="id4"/>
+			<label kind="guard" x="34" y="-34">jobs &lt; J</label>
+			<label kind="assignment" x="34" y="-17">jobs++</label>
 		</transition>
 		<transition>
 			<source ref="id2"/>
 			<target ref="id3"/>
+			<label kind="guard" x="8" y="-85">jobs &lt; J</label>
+			<label kind="assignment" x="8" y="-68">jobs++</label>
 		</transition>
 	</template>
 	<template>
 		<name>Mallet</name>
-		<location id="id10" x="0" y="0">
+		<location id="id11" x="0" y="0">
 			<name x="-10" y="-34">free</name>
 		</location>
-		<location id="id11" x="136" y="0">
+		<location id="id12" x="136" y="0">
 			<name x="126" y="-34">taken</name>
 		</location>
-		<init ref="id10"/>
+		<init ref="id11"/>
 		<transition>
-			<source ref="id11"/>
-			<target ref="id10"/>
+			<source ref="id12"/>
+			<target ref="id11"/>
 			<label kind="synchronisation" x="34" y="42">put_mallet?</label>
 			<nail x="136" y="68"/>
 			<nail x="0" y="68"/>
 		</transition>
 		<transition>
-			<source ref="id10"/>
-			<target ref="id11"/>
+			<source ref="id11"/>
+			<target ref="id12"/>
 			<label kind="synchronisation" x="34" y="-25">get_mallet?</label>
 		</transition>
 	</template>
