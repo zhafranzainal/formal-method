@@ -3,7 +3,7 @@
 <nta>
 	<declaration>// Place global declarations here.
 chan get_throttle_down,  put_throttle_down, get_flaps_down, put_flaps_down, get_brake_on, put_brake_on, get_reverse_thrust_on, put_reverse_thrust_on;
-int speed;</declaration>
+int speed = 10;</declaration>
 	<template>
 		<name>ThrottleDown</name>
 		<location id="id0" x="0" y="0">
@@ -98,101 +98,114 @@ int speed;</declaration>
 		<location id="id8" x="0" y="0">
 			<name x="-51" y="-8">start</name>
 		</location>
-		<location id="id9" x="102" y="-136">
-			<name x="85" y="-170">slow</name>
+		<location id="id9" x="136" y="-136">
+			<name x="119" y="-170">slow</name>
 		</location>
-		<location id="id10" x="102" y="0">
-			<name x="85" y="-34">brake</name>
+		<location id="id10" x="136" y="0">
+			<name x="119" y="-34">brake</name>
 		</location>
-		<location id="id11" x="102" y="170">
-			<name x="85" y="187">stop</name>
+		<location id="id11" x="136" y="170">
+			<name x="119" y="187">stop</name>
 		</location>
-		<location id="id12" x="374" y="170">
-			<name x="331" y="187">applied_brake</name>
+		<location id="id12" x="408" y="170">
+			<name x="365" y="187">applied_brake</name>
 		</location>
-		<location id="id13" x="374" y="-68">
-			<name x="348" y="-102">applied_flaps</name>
+		<location id="id13" x="408" y="-68">
+			<name x="382" y="-102">applied_flaps</name>
 		</location>
-		<location id="id14" x="374" y="-136">
-			<name x="331" y="-170">applied_throttle</name>
+		<location id="id14" x="408" y="-136">
+			<name x="365" y="-170">applied_throttle</name>
 		</location>
-		<location id="id15" x="374" y="0">
-			<name x="306" y="9">applied_reverse_thrust</name>
+		<location id="id15" x="408" y="0">
+			<name x="340" y="9">applied_reverse_thrust</name>
+		</location>
+		<location id="id16" x="0" y="170">
 		</location>
 		<init ref="id8"/>
 		<transition>
+			<source ref="id8"/>
+			<target ref="id16"/>
+			<label kind="guard" x="-76" y="85">speed == 0</label>
+		</transition>
+		<transition>
 			<source ref="id14"/>
 			<target ref="id8"/>
-			<label kind="synchronisation" x="442" y="-161">put_throttle_down!</label>
-			<nail x="578" y="-136"/>
-			<nail x="578" y="-238"/>
+			<label kind="synchronisation" x="476" y="-161">put_throttle_down!</label>
+			<nail x="612" y="-136"/>
+			<nail x="612" y="-238"/>
 			<nail x="0" y="-238"/>
 		</transition>
 		<transition>
 			<source ref="id13"/>
 			<target ref="id8"/>
-			<label kind="synchronisation" x="442" y="-93">put_flaps_down!</label>
-			<nail x="578" y="-68"/>
-			<nail x="578" y="-238"/>
+			<label kind="synchronisation" x="476" y="-93">put_flaps_down!</label>
+			<nail x="612" y="-68"/>
+			<nail x="612" y="-238"/>
 			<nail x="0" y="-238"/>
 		</transition>
 		<transition>
 			<source ref="id15"/>
 			<target ref="id8"/>
-			<label kind="synchronisation" x="416" y="-25">put_reverse_thrust_on!</label>
-			<nail x="578" y="0"/>
-			<nail x="578" y="-238"/>
+			<label kind="synchronisation" x="450" y="-25">put_reverse_thrust_on!</label>
+			<nail x="612" y="0"/>
+			<nail x="612" y="-238"/>
 			<nail x="0" y="-238"/>
 		</transition>
 		<transition>
 			<source ref="id12"/>
 			<target ref="id8"/>
-			<label kind="synchronisation" x="416" y="144">put_brake_on!</label>
-			<nail x="578" y="170"/>
-			<nail x="578" y="-238"/>
+			<label kind="synchronisation" x="450" y="144">put_brake_on!</label>
+			<nail x="612" y="170"/>
+			<nail x="612" y="-238"/>
 			<nail x="0" y="-238"/>
 		</transition>
 		<transition>
 			<source ref="id11"/>
 			<target ref="id12"/>
-			<label kind="synchronisation" x="127" y="144">get_brake_on!</label>
+			<label kind="synchronisation" x="161" y="144">get_brake_on!</label>
 		</transition>
 		<transition>
 			<source ref="id10"/>
 			<target ref="id15"/>
-			<label kind="synchronisation" x="204" y="-25">get_reverse_thrust_on!</label>
+			<label kind="synchronisation" x="238" y="-25">get_reverse_thrust_on!</label>
 		</transition>
 		<transition>
 			<source ref="id10"/>
 			<target ref="id12"/>
-			<label kind="synchronisation" x="238" y="59">get_brake_on!</label>
+			<label kind="synchronisation" x="272" y="59">get_brake_on!</label>
 		</transition>
 		<transition>
 			<source ref="id10"/>
 			<target ref="id13"/>
-			<label kind="synchronisation" x="127" y="-59">get_flaps_down!</label>
+			<label kind="synchronisation" x="161" y="-59">get_flaps_down!</label>
 		</transition>
 		<transition>
 			<source ref="id9"/>
 			<target ref="id13"/>
-			<label kind="synchronisation" x="102" y="-110">get_flaps_down!</label>
+			<label kind="synchronisation" x="136" y="-110">get_flaps_down!</label>
 		</transition>
 		<transition>
 			<source ref="id9"/>
 			<target ref="id14"/>
-			<label kind="synchronisation" x="170" y="-161">get_throttle_down!</label>
+			<label kind="synchronisation" x="204" y="-161">get_throttle_down!</label>
 		</transition>
 		<transition>
 			<source ref="id8"/>
 			<target ref="id11"/>
+			<label kind="guard" x="102" y="85">speed &gt; 0</label>
+			<label kind="assignment" x="102" y="102">speed--</label>
 		</transition>
 		<transition>
 			<source ref="id8"/>
 			<target ref="id10"/>
+			<label kind="guard" x="51" y="-42">speed &gt; 0</label>
+			<label kind="assignment" x="51" y="-25">speed--</label>
 		</transition>
 		<transition>
 			<source ref="id8"/>
 			<target ref="id9"/>
+			<label kind="guard" x="51" y="-144">speed &gt; 0</label>
+			<label kind="assignment" x="51" y="-127">speed--</label>
 		</transition>
 	</template>
 	<system>// Place template instantiations here.
