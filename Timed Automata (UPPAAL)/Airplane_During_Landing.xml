@@ -120,6 +120,7 @@ int speed = 10;</declaration>
 			<name x="340" y="9">applied_reverse_thrust</name>
 		</location>
 		<location id="id16" x="0" y="170">
+			<name x="-17" y="187">done</name>
 		</location>
 		<init ref="id8"/>
 		<transition>
