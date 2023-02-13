@@ -29,7 +29,7 @@ chan get_hammer, put_hammer, get_mallet, put_mallet;</declaration>
 		<name x="5" y="5">Jobber</name>
 		<declaration>// Place local declarations here.</declaration>
 		<location id="id2" x="0" y="0">
-			<name x="-25" y="17">begin</name>
+			<name x="-51" y="-17">begin</name>
 		</location>
 		<location id="id3" x="102" y="-102">
 			<name x="92" y="-136">easy</name>
@@ -146,7 +146,23 @@ system Jobber1, Jobber2, Hammer, Mallet;
 </system>
 	<queries>
 		<query>
-			<formula></formula>
+			<formula>E&lt;&gt; Jobber1.work_av_mallet &amp;&amp; Jobber2.work_av_hammer</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Jobber1.work_av_mallet &amp;&amp; Jobber2.work_av_mallet</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Jobber1.work_av_hammer &amp;&amp; Jobber2.work_av_hammer</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] Mallet.taken == (Jobber1.work_av_mallet || Jobber2.work_av_mallet)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] not deadlock</formula>
 			<comment></comment>
 		</query>
 	</queries>
