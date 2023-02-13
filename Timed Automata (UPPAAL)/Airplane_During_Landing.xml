@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+chan get_throttle_down,  put_throttle_down, get_flaps_down, put_flaps_down, get_brake_on, put_brake_on, get_reverse_thrust_on, put_reverse_thrust_on;
+int speed;</declaration>
+	<template>
+		<name>ThrottleDown</name>
+		<location id="id0" x="0" y="0">
+			<name x="-10" y="-34">free</name>
+		</location>
+		<location id="id1" x="238" y="0">
+			<name x="228" y="-34">being_used</name>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="59" y="42">put_throttle_down?</label>
+			<nail x="238" y="68"/>
+			<nail x="0" y="68"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="59" y="-25">get_throttle_down?</label>
+		</transition>
+	</template>
+	<template>
+		<name>FlapDown</name>
+		<location id="id2" x="0" y="0">
+			<name x="-10" y="-34">free</name>
+		</location>
+		<location id="id3" x="238" y="0">
+			<name x="228" y="-34">being_used</name>
+		</location>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="68" y="42">put_flaps_down?</label>
+			<nail x="238" y="68"/>
+			<nail x="0" y="68"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="68" y="-25">get_flaps_down?</label>
+		</transition>
+	</template>
+	<template>
+		<name>Brake</name>
+		<location id="id4" x="0" y="0">
+			<name x="-10" y="-34">free</name>
+		</location>
+		<location id="id5" x="238" y="0">
+			<name x="228" y="-34">being_used</name>
+		</location>
+		<init ref="id4"/>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="68" y="42">put_brake_on?</label>
+			<nail x="238" y="68"/>
+			<nail x="0" y="68"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="68" y="-25">get_brake_on?</label>
+		</transition>
+	</template>
+	<template>
+		<name>ReverseThrust</name>
+		<location id="id6" x="0" y="0">
+			<name x="-10" y="-34">free</name>
+		</location>
+		<location id="id7" x="238" y="0">
+			<name x="228" y="-34">being_used</name>
+		</location>
+		<init ref="id6"/>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="42" y="42">put_reverse_thrust_on?</label>
+			<nail x="238" y="68"/>
+			<nail x="0" y="68"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="42" y="-25">get_reverse_thrust_on?</label>
+		</transition>
+	</template>
+	<template>
+		<name x="5" y="5">Pilot</name>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id8" x="0" y="0">
+			<name x="-51" y="-8">start</name>
+		</location>
+		<location id="id9" x="102" y="-136">
+			<name x="85" y="-170">slow</name>
+		</location>
+		<location id="id10" x="102" y="0">
+			<name x="85" y="-34">brake</name>
+		</location>
+		<location id="id11" x="102" y="170">
+			<name x="85" y="187">stop</name>
+		</location>
+		<location id="id12" x="374" y="170">
+			<name x="331" y="187">applied_brake</name>
+		</location>
+		<location id="id13" x="374" y="-68">
+			<name x="348" y="-102">applied_flaps</name>
+		</location>
+		<location id="id14" x="374" y="-136">
+			<name x="331" y="-170">applied_throttle</name>
+		</location>
+		<location id="id15" x="374" y="0">
+			<name x="306" y="9">applied_reverse_thrust</name>
+		</location>
+		<init ref="id8"/>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="442" y="-161">put_throttle_down!</label>
+			<nail x="578" y="-136"/>
+			<nail x="578" y="-238"/>
+			<nail x="0" y="-238"/>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="442" y="-93">put_flaps_down!</label>
+			<nail x="578" y="-68"/>
+			<nail x="578" y="-238"/>
+			<nail x="0" y="-238"/>
+		</transition>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="416" y="-25">put_reverse_thrust_on!</label>
+			<nail x="578" y="0"/>
+			<nail x="578" y="-238"/>
+			<nail x="0" y="-238"/>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="416" y="144">put_brake_on!</label>
+			<nail x="578" y="170"/>
+			<nail x="578" y="-238"/>
+			<nail x="0" y="-238"/>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id12"/>
+			<label kind="synchronisation" x="127" y="144">get_brake_on!</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id15"/>
+			<label kind="synchronisation" x="204" y="-25">get_reverse_thrust_on!</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id12"/>
+			<label kind="synchronisation" x="238" y="59">get_brake_on!</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="127" y="-59">get_flaps_down!</label>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="102" y="-110">get_flaps_down!</label>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id14"/>
+			<label kind="synchronisation" x="170" y="-161">get_throttle_down!</label>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id11"/>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id10"/>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id9"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Pilot1 = Pilot();
+Pilot2 = Pilot();
+
+// List one or more processes to be composed into a system.
+system Pilot1, Pilot2, ThrottleDown, FlapDown, Brake, ReverseThrust;
+    </system>
+	<queries>
+		<query>
+			<formula></formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
