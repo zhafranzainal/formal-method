@@ -1,0 +1,141 @@
+﻿─ section OnlineCarRentalSystem parents standard_toolkit
+└
+
+This specification describes ...
+
+Given sets
+─ [ NAME, LICENSE, BOOKING, VEHICLE, TYPE, BRAND, DATE, MONTH, YEAR ] └
+
+Freetype definition for driving license status
+─
+  STATUS ::= active | inactive
+└
+
+Freetype definition for transmission type
+─
+  TRANSMISSION ::= manual | auto
+└
+
+Freetype definition for posting type
+─
+  POST ::= suggestion | comment | complaint
+└
+
+State definition for member
+┌ MemberRecord
+  member: ℙ NAME
+  drivingLicense: NAME ↣ LICENSE → DATE
+  licenseStatus: NAME → STATUS
+|
+  member = dom drivingLicense
+  member = dom licenseStatus
+└
+
+State definition for reservation history
+┌ ReservationRecord
+  booking: ℙ BOOKING
+  carDetails: BOOKING → NAME ⇸ VEHICLE → DATE
+|
+  booking = dom carDetails
+└
+
+State definition for vehicle listing
+┌ VehicleRecord
+  vehicle: ℙ VEHICLE
+  vehicleDetails: VEHICLE → TYPE → ℕ → 𝔸 → TRANSMISSION → BRAND → YEAR → ℕ
+|
+  vehicle = dom vehicleDetails
+└
+
+State definition for feedback
+┌ FeedbackRecord
+  MemberRecord
+  feedback: ℙ POST
+  posting: NAME ⇸ POST → POST
+|
+  member = dom posting
+└
+
+Operation: update profile
+┌ UpdateProfile
+  ΔMemberRecord
+  name?: NAME
+  license?: LICENSE
+  expiryDate?: DATE
+|
+  name? ∈ member
+  drivingLicense′ = drivingLicense ∖ {name? ↦ {license? ↦ expiryDate?}}
+  drivingLicense′ = drivingLicense ∪ {name? ↦ {license? ↦ expiryDate?}}
+└
+
+Operation: view reservation history
+┌ ViewReservation
+  ΞReservationRecord
+  ΞMemberRecord
+  name?: NAME
+  booking?: BOOKING
+  history!: NAME ⇸ VEHICLE → DATE
+|
+  name? ∈ member
+  booking? ∈ booking
+  history! = carDetails(booking?)
+└
+
+Operation: view car info
+┌ ViewCarInfo
+  ΞVehicleRecord
+  vehicle?: VEHICLE
+  info!: TYPE → ℕ → 𝔸 → TRANSMISSION → BRAND → YEAR → ℕ
+|
+  info! = vehicleDetails(vehicle?)
+└
+
+Operation: book car
+┌ BookCar
+  ΔReservationRecord
+  ΞMemberRecord
+  ΞVehicleRecord
+  booking?: BOOKING
+  name?: NAME
+  vehicleName?: VEHICLE
+  bookingDate?: DATE
+  suggestion!: TYPE → ℕ → 𝔸 → TRANSMISSION → BRAND → YEAR → ℕ
+|
+  name? ∈ member
+  carDetails′ = carDetails ∪ {booking? ↦ {name? ↦ {vehicleName? ↦ bookingDate?}}}
+  vehicle′ = vehicle ∖ {vehicleName?}
+  
+  vehicleName? ∉ vehicle
+  suggestion! = vehicleDetails(vehicleName?)
+└
+
+Operation: post feedback
+┌ PostFeedback
+  ΔFeedbackRecord
+  name?: NAME
+  feedbackType?: POST
+  post?: POST
+|
+  feedbackType? = suggestion
+  posting′ = posting ∪ {name? ↦ {suggestion ↦ post?}}
+  
+  feedbackType? = comment
+  posting′ = posting ∪ {name? ↦ {comment ↦ post?}}
+  
+  feedbackType? = complaint
+  posting′ = posting ∪ {name? ↦ {complaint ↦ post?}}
+└
+
+Operation: print report
+┌ PrintReport
+  month?: MONTH
+  statisticBooking!: ℕ
+  carDamage!: ℕ
+  cost!: 𝔸
+  income!: 𝔸
+|
+  statisticBooking! = 1
+  carDamage! = 1
+  cost! = 1
+  income! = 1
+└
