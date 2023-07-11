@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+chan car_roadA, car_roadB, redlight_roadA;</declaration>
+	<template>
+		<name x="5" y="5">RoadB</name>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="0" y="0">
+			<name x="-17" y="17">begin</name>
+		</location>
+		<location id="id1" x="102" y="0">
+			<name x="59" y="17">red_light_roadB</name>
+		</location>
+		<location id="id2" x="238" y="0">
+			<name x="187" y="17">green_light_roadB</name>
+		</location>
+		<location id="id3" x="238" y="-68">
+			<name x="187" y="-102">yellow_light_roadB</name>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id0"/>
+			<nail x="-34" y="-68"/>
+			<nail x="-34" y="0"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="119" y="-25">redlight_roadA?</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="17" y="-25">car_roadA!</label>
+		</transition>
+	</template>
+	<template>
+		<name>RoadA</name>
+		<location id="id4" x="0" y="0">
+			<name x="-17" y="17">begin</name>
+		</location>
+		<location id="id5" x="374" y="0">
+			<name x="340" y="-51">red_light_roadA</name>
+		</location>
+		<location id="id6" x="238" y="0">
+			<name x="187" y="17">yellow_light_roadA</name>
+		</location>
+		<location id="id7" x="102" y="0">
+			<name x="42" y="17">green_light_roadA</name>
+		</location>
+		<init ref="id4"/>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id4"/>
+			<nail x="374" y="68"/>
+			<nail x="-68" y="68"/>
+			<nail x="-68" y="0"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="255" y="-25">redlight_roadA!</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id6"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="17" y="-25">car_roadA?</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Road1 = RoadA();
+Road2 = RoadB();
+
+// List one or more processes to be composed into a system.
+system Road1, Road2;
+    </system>
+	<queries>
+		<query>
+			<formula></formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
